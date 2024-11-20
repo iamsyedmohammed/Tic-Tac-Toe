@@ -1,10 +1,18 @@
 // Select all individual boxes
+let mainContainer=document.querySelector(".mainContainer")
 let boxes = document.querySelectorAll(".box");
 let newgameBtn=document.querySelector(".newgame-Btn");
 let resetBtn=document.querySelector("#rst-Btn");
 let msg=document.querySelector("#msg");
 let msgContainer=document.querySelector(".msg-container")
 let turnO=true;
+let optionsContainer=document.querySelector(".optionsContainer")
+let xSymbol=document.querySelector(".xSymbol");
+let ySymbol=document.querySelector(".ySymbol");
+
+playerSymbol="";
+isSymbolSelected=false;
+
 const winnerPatterns=[
     [0,1,2],
     [0,3,6],
@@ -17,31 +25,43 @@ const winnerPatterns=[
 ]
 
 const resetGame=()=>{
+isSymbolSelected=false;    
 turnO=true;
 enableButtons();
 msgContainer.classList.add("hide");
-resetBtn.classList.remove("hide")
+resetBtn.classList.remove("hide");
+optionsContainer.classList.remove("hide");
+mainContainer.classList.add("hide")  
+
 }
 
+
+const GameInitialization=()=>{
+    optionsContainer.classList.add("hide"); 
 // Add a click event listener to each box
 boxes.forEach(box => {
+    mainContainer.classList.remove("hide") 
+   
   box.addEventListener("click", () => {
     
+
     if(box.classList.contains("disabled")||box.innerText!==""){
         return;
     }
     if(turnO){
-        box.innerText = "X"; // Insert "X" only in the clicked box
+        box.innerText = playerSymbol; // Insert "X" only in the clicked box
         turnO=false;
         
     }else{
-        box.innerText="O"
+        box.innerText=playerSymbol=== "X" ? "O" : "X";
         turnO=true;
         
     }
     checkWinner();
   });
 });
+}
+
 
 const disableButtons=()=>{
     boxes.forEach(box=>{
@@ -74,6 +94,7 @@ const drawMessage=()=>{
 
 
 const checkWinner=()=>
+    
     {
          
         for (let patterns of winnerPatterns) 
@@ -111,8 +132,24 @@ const checkWinner=()=>
 
     }
 
+xSymbol.addEventListener("click",()=>{
+   if(!isSymbolSelected){
+    playerSymbol=xSymbol.innerText;
+    isSymbolSelected=true;
+    optionsContainer.classList.add("hide");
+    GameInitialization();
+   }
+})
 
 
+ySymbol.addEventListener("click",()=>{
+   if(!isSymbolSelected){
+    playerSymbol=ySymbol.innerText;
+    isSymbolSelected=true;
+    optionsContainer.classList.add("hide");
+    GameInitialization();
+   }
+})
 
 
 
